@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.pimpao.samplespringboot.domain.Category;
 import com.pimpao.samplespringboot.repositories.CategoryRepository;
+import com.pimpao.samplespringboot.services.exceptions.ObjectNotFoundException;
 
 @Service
 public class CategoryService {
@@ -16,6 +17,7 @@ public class CategoryService {
 	
 	public Category findById(Integer id) {
 		Optional<Category> category = categoryRepository.findById(id);
-		return category.orElse(null);
+		return category.orElseThrow(() -> new ObjectNotFoundException("Objeto não encontrado! id: " + id
+				+ ", tipo: " + Category.class.getName()));
 	}
 }
