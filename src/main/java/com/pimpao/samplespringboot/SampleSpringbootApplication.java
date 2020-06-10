@@ -7,12 +7,17 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+import com.pimpao.samplespringboot.domain.Address;
 import com.pimpao.samplespringboot.domain.Category;
 import com.pimpao.samplespringboot.domain.City;
+import com.pimpao.samplespringboot.domain.Customer;
 import com.pimpao.samplespringboot.domain.Product;
 import com.pimpao.samplespringboot.domain.State;
+import com.pimpao.samplespringboot.domain.enums.CustomerType;
+import com.pimpao.samplespringboot.repositories.AddressRepository;
 import com.pimpao.samplespringboot.repositories.CategoryRepository;
 import com.pimpao.samplespringboot.repositories.CityRepository;
+import com.pimpao.samplespringboot.repositories.CustomerRepository;
 import com.pimpao.samplespringboot.repositories.ProductRepository;
 import com.pimpao.samplespringboot.repositories.StateRepository;
 
@@ -30,6 +35,12 @@ public class SampleSpringbootApplication implements CommandLineRunner {
 	
 	@Autowired
 	private CityRepository cityRepository;
+	
+	@Autowired
+	private CustomerRepository customerRepository;
+	
+	@Autowired
+	private AddressRepository addressRepository;
 	
 	public static void main(String[] args) {
 		SpringApplication.run(SampleSpringbootApplication.class, args);
@@ -66,6 +77,17 @@ public class SampleSpringbootApplication implements CommandLineRunner {
 		
 		stateRepository.saveAll(Arrays.asList(st1, st2));
 		cityRepository.saveAll(Arrays.asList(c1, c2, c3));
+		
+		Customer cus1 = new Customer(null, "Maria Silva", "maria@gmail.com", "36378912377", CustomerType.PRIVATE_INDIVIDUAL);
+		cus1.getTelephones().addAll(Arrays.asList("27363323", "93838393"));
+		
+		Address a1 = new Address(null, "Rua Flores", "300", "Apto 203", "Jardim", "38220834", cus1, c1);
+		Address a2 = new Address(null, "Avenida Matos", "105", "Sala 800", "Centro", "38777012", cus1, c2);
+		
+		cus1.getAddresses().addAll(Arrays.asList(a1, a2));
+		
+		customerRepository.save(cus1);
+		addressRepository.saveAll(Arrays.asList(a1, a2));		
 		
 	}
 
