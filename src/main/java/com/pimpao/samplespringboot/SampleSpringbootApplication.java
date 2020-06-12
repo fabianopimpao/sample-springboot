@@ -1,6 +1,8 @@
 package com.pimpao.samplespringboot;
 
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -11,13 +13,20 @@ import com.pimpao.samplespringboot.domain.Address;
 import com.pimpao.samplespringboot.domain.Category;
 import com.pimpao.samplespringboot.domain.City;
 import com.pimpao.samplespringboot.domain.Customer;
+import com.pimpao.samplespringboot.domain.Order;
+import com.pimpao.samplespringboot.domain.Payment;
+import com.pimpao.samplespringboot.domain.PaymentWithCard;
+import com.pimpao.samplespringboot.domain.PaymentWithSlip;
 import com.pimpao.samplespringboot.domain.Product;
 import com.pimpao.samplespringboot.domain.State;
 import com.pimpao.samplespringboot.domain.enums.CustomerType;
+import com.pimpao.samplespringboot.domain.enums.PaymentStatus;
 import com.pimpao.samplespringboot.repositories.AddressRepository;
 import com.pimpao.samplespringboot.repositories.CategoryRepository;
 import com.pimpao.samplespringboot.repositories.CityRepository;
 import com.pimpao.samplespringboot.repositories.CustomerRepository;
+import com.pimpao.samplespringboot.repositories.OrderRepository;
+import com.pimpao.samplespringboot.repositories.PaymentRepository;
 import com.pimpao.samplespringboot.repositories.ProductRepository;
 import com.pimpao.samplespringboot.repositories.StateRepository;
 
@@ -41,6 +50,12 @@ public class SampleSpringbootApplication implements CommandLineRunner {
 	
 	@Autowired
 	private AddressRepository addressRepository;
+	
+	@Autowired
+	private OrderRepository orderRepository;
+	
+	@Autowired
+	private PaymentRepository paymentRepository;
 	
 	public static void main(String[] args) {
 		SpringApplication.run(SampleSpringbootApplication.class, args);
@@ -87,7 +102,21 @@ public class SampleSpringbootApplication implements CommandLineRunner {
 		cus1.getAddresses().addAll(Arrays.asList(a1, a2));
 		
 		customerRepository.save(cus1);
-		addressRepository.saveAll(Arrays.asList(a1, a2));		
+		addressRepository.saveAll(Arrays.asList(a1, a2));
+				
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+		Order ord1 = new Order(null, sdf.parse("30/09/2017 10:32"), cus1, a1);
+		Order ord2 = new Order(null, sdf.parse("10/10/2017 19:35"), cus1, a2);
+		
+		Payment pmt1 = new PaymentWithCard(null, PaymentStatus.PAID, ord1, 6);
+		ord1.setPayment(pmt1);
+		Payment pmt2 = new PaymentWithSlip(null, PaymentStatus.PEDING, ord2, sdf.parse("20/10/2017 00:00"), null);
+		ord2.setPayment(pmt2);
+		
+		cus1.getOrders().addAll(Arrays.asList(ord1, ord2));
+		
+		orderRepository.saveAll(Arrays.asList(ord1, ord2));
+		paymentRepository.saveAll(Arrays.asList(pmt1, pmt2));
 		
 	}
 
