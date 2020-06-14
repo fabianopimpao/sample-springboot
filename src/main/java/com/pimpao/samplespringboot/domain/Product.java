@@ -2,7 +2,9 @@ package com.pimpao.samplespringboot.domain;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -11,6 +13,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
@@ -33,6 +36,9 @@ public class Product implements Serializable {
 			inverseJoinColumns = @JoinColumn(name = "category_id")
 	)
 	private List<Category> categories = new ArrayList<>();
+	
+	@OneToMany(mappedBy = "id.product")
+	private Set<OrderItem> items = new HashSet<>();
 	
 	public Product() {
 		
@@ -75,6 +81,23 @@ public class Product implements Serializable {
 	public void setCategories(List<Category> categories) {
 		this.categories = categories;
 	}
+	
+	public Set<OrderItem> getItems() {
+		return items;
+	}
+
+	public void setItems(Set<OrderItem> items) {
+		this.items = items;
+	}
+	
+	public List<Order> getOrders() {
+		List<Order> listOrder = new ArrayList<>();
+		for (OrderItem item : items) {
+			listOrder.add(item.getOrder());
+		}
+		
+		return listOrder;
+	}
 
 	@Override
 	public int hashCode() {
@@ -99,6 +122,6 @@ public class Product implements Serializable {
 		} else if (!id.equals(other.id))
 			return false;
 		return true;
-	}		
+	}			
 	
 }

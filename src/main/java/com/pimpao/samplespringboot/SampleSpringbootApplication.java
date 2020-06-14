@@ -2,8 +2,8 @@ package com.pimpao.samplespringboot;
 
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
-import java.util.Date;
 
+import org.hibernate.query.criteria.internal.OrderImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -14,6 +14,7 @@ import com.pimpao.samplespringboot.domain.Category;
 import com.pimpao.samplespringboot.domain.City;
 import com.pimpao.samplespringboot.domain.Customer;
 import com.pimpao.samplespringboot.domain.Order;
+import com.pimpao.samplespringboot.domain.OrderItem;
 import com.pimpao.samplespringboot.domain.Payment;
 import com.pimpao.samplespringboot.domain.PaymentWithCard;
 import com.pimpao.samplespringboot.domain.PaymentWithSlip;
@@ -25,6 +26,7 @@ import com.pimpao.samplespringboot.repositories.AddressRepository;
 import com.pimpao.samplespringboot.repositories.CategoryRepository;
 import com.pimpao.samplespringboot.repositories.CityRepository;
 import com.pimpao.samplespringboot.repositories.CustomerRepository;
+import com.pimpao.samplespringboot.repositories.OrderItemRepository;
 import com.pimpao.samplespringboot.repositories.OrderRepository;
 import com.pimpao.samplespringboot.repositories.PaymentRepository;
 import com.pimpao.samplespringboot.repositories.ProductRepository;
@@ -56,6 +58,9 @@ public class SampleSpringbootApplication implements CommandLineRunner {
 	
 	@Autowired
 	private PaymentRepository paymentRepository;
+	
+	@Autowired
+	private OrderItemRepository orderItemRepository;
 	
 	public static void main(String[] args) {
 		SpringApplication.run(SampleSpringbootApplication.class, args);
@@ -117,6 +122,19 @@ public class SampleSpringbootApplication implements CommandLineRunner {
 		
 		orderRepository.saveAll(Arrays.asList(ord1, ord2));
 		paymentRepository.saveAll(Arrays.asList(pmt1, pmt2));
+		
+		OrderItem orderItem1 = new OrderItem(ord1, prod1, 0.00, 1, 2000.00);
+		OrderItem orderItem2 = new OrderItem(ord1, prod3, 0.00, 2, 80.00);
+		OrderItem orderItem3 = new OrderItem(ord2, prod2, 100.00, 1, 800.00);
+		
+		ord1.getItems().addAll(Arrays.asList(orderItem1, orderItem2));
+		ord2.getItems().add(orderItem3);
+		
+		prod1.getItems().add(orderItem1);
+		prod2.getItems().add(orderItem3);
+		prod3.getItems().add(orderItem2);
+		
+		orderItemRepository.saveAll(Arrays.asList(orderItem1, orderItem2, orderItem3));
 		
 	}
 
