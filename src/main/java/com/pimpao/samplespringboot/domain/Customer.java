@@ -14,6 +14,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.pimpao.samplespringboot.domain.enums.CustomerType;
 
@@ -39,6 +40,7 @@ public class Customer implements Serializable {
 	private Set<String> telephones = new HashSet<>();
 	
 	@OneToMany(mappedBy = "customer")
+	@JsonBackReference
 	private List<Order> orders = new ArrayList<>();
 	
 	
