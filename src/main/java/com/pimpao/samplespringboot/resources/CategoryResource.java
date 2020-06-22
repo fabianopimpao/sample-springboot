@@ -1,6 +1,8 @@
 package com.pimpao.samplespringboot.resources;
 
 import java.net.URI;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.pimpao.samplespringboot.domain.Category;
+import com.pimpao.samplespringboot.dto.CategoryDto;
 import com.pimpao.samplespringboot.services.CategoryService;
 
 @RestController
@@ -48,5 +51,12 @@ public class CategoryResource {
 	public ResponseEntity<Void> delete(@PathVariable("id") Integer id) {
 		categoryService.deleteById(id);
 		return ResponseEntity.noContent().build();
+	}
+	
+	@RequestMapping(method = RequestMethod.GET)
+	public ResponseEntity<List<CategoryDto>> findAll() {
+		List<Category> categories = categoryService.findAll();
+		List<CategoryDto> categoriesDto = categories.stream().map(category -> new CategoryDto(category)).collect(Collectors.toList());
+		return ResponseEntity.ok().body(categoriesDto);
 	}
 }
