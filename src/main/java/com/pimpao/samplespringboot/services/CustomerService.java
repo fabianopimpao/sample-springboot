@@ -53,7 +53,7 @@ public class CustomerService {
 	}
 	
 	public Customer fromDto(CustomerDto customerDto) {
-		return new Customer(customerDto.getId(), customerDto.getName(), customerDto.getEmail());
+		return new Customer(customerDto.getId(), customerDto.getName(), customerDto.getEmail(), null, null);
 	}
 	
 	private void updateData(Customer customerUpdate, Customer customer) {

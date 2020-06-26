@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.pimpao.samplespringboot.domain.Customer;
-import com.pimpao.samplespringboot.dto.CategoryDto;
 import com.pimpao.samplespringboot.dto.CustomerDto;
 import com.pimpao.samplespringboot.services.CustomerService;
 

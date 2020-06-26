@@ -44,20 +44,14 @@ public class Customer implements Serializable {
 	
 	public Customer() {
 		
-	}
-	
-	public Customer(Integer id, String name, String email) {
-		this.id = id;
-		this.name = name;
-		this.email = email;
-	}
+	}	
 	
 	public Customer(Integer id, String name, String email, String cpfOrCnpj, CustomerType type) {		
 		this.id = id;
 		this.name = name;
 		this.email = email;
 		this.cpfOrCnpj = cpfOrCnpj;
-		this.type = type.getCode();
+		this.type = (type != null) ? type.getCode() : null;
 	}
 
 	public Integer getId() {
