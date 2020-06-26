@@ -73,8 +73,8 @@ public class CategoryResource {
 			@RequestParam(value = "orderBy", defaultValue = "name") String orderBy, 
 			@RequestParam(value = "direction", defaultValue = "ASC") String direction) {
 		
-		Page<Category> categries = categoryService.findPage(page, size, orderBy, direction);
-		Page<CategoryDto> categoriesDto = categries.map(category -> new CategoryDto(category));
+		Page<Category> categories = categoryService.findPage(page, size, orderBy, direction);
+		Page<CategoryDto> categoriesDto = categories.map(category -> new CategoryDto(category));
 		
 		return ResponseEntity.ok().body(categoriesDto);
 	}
