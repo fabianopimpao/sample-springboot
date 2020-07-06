@@ -41,7 +41,7 @@ public class CustomerResource {
 		customer = customerService.save(customer);
 		URI uri = ServletUriComponentsBuilder
 					.fromCurrentRequest()
-					.path("{id}")
+					.path("/{id}")
 					.buildAndExpand(customer.getId())
 					.toUri();
 		

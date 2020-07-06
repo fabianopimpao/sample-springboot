@@ -19,6 +19,7 @@ import com.pimpao.samplespringboot.dto.CustomerDto;
 import com.pimpao.samplespringboot.dto.CustomerNewDto;
 import com.pimpao.samplespringboot.repositories.AddressRepository;
 import com.pimpao.samplespringboot.repositories.CustomerRepository;
+import com.pimpao.samplespringboot.services.exceptions.DataIntegrityException;
 import com.pimpao.samplespringboot.services.exceptions.ObjectNotFoundException;
 
 @Service
@@ -60,7 +61,7 @@ public class CustomerService {
 		try {
 			customerRepository.deleteById(id);			
 		} catch (DataIntegrityViolationException ex) {
-			throw new DataIntegrityViolationException("Não é possível excluir clientes com endereços");
+			throw new DataIntegrityException("Não é possível excluir clientes com pedidos cadastrados");
 		}
 	}
 	
