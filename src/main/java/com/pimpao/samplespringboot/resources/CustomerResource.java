@@ -1,5 +1,6 @@
 package com.pimpao.samplespringboot.resources;
 
+import java.net.URI;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -14,9 +15,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.pimpao.samplespringboot.domain.Customer;
 import com.pimpao.samplespringboot.dto.CustomerDto;
+import com.pimpao.samplespringboot.dto.CustomerNewDto;
 import com.pimpao.samplespringboot.services.CustomerService;
 
 @RestController
@@ -30,6 +33,19 @@ public class CustomerResource {
 	public ResponseEntity<Customer> find(@PathVariable("id") Integer id) {
 		Customer customer = customerService.findById(id);
 		return ResponseEntity.ok().body(customer);
+	}
+	
+	@RequestMapping(method = RequestMethod.POST)
+	public ResponseEntity<Void> save(@Valid @RequestBody CustomerNewDto customerNewDto) {
+		Customer customer = customerService.fromDto(customerNewDto);
+		customer = customerService.save(customer);
+		URI uri = ServletUriComponentsBuilder
+					.fromCurrentRequest()
+					.path("{id}")
+					.buildAndExpand(customer.getId())
+					.toUri();
+		
+		return ResponseEntity.created(uri).build();
 	}
 	
 	@RequestMapping(method = RequestMethod.GET)
@@ -64,4 +80,5 @@ public class CustomerResource {
 		
 		return ResponseEntity.ok().body(customersDto);		
 	}
+	
 }
