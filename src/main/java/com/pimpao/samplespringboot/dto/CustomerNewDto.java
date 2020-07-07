@@ -2,21 +2,41 @@ package com.pimpao.samplespringboot.dto;
 
 import java.io.Serializable;
 
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
+
+import com.pimpao.samplespringboot.services.validation.CustomerInsert;
+
+@CustomerInsert
 public class CustomerNewDto implements Serializable {
 		
 	private static final long serialVersionUID = 1L;
 	
+	@NotEmpty(message = "Preenchimento obrigatório")
+	@Size(min = 5, max = 120, message = "O tamanho deve ser entre 5 e 120 caracteres")
 	private String name;
+	
+	@NotEmpty(message = "Preenchimento obrigatório")
+	@Email(message = "Email inválido")
 	private String email;
+	
+	@NotEmpty(message = "Preenchimento obrigatório")
 	private String cpfOrCnpj;
 	private Integer type;
 	
+	@NotEmpty(message = "Preenchimento obrigatório")
 	private String street;
+	
+	@NotEmpty(message = "Preenchimento obrigatório")
 	private String number;
 	private String complement;
 	private String neighborhood;
+	
+	@NotEmpty(message = "Preenchimento obrigatório")
 	private String zipCode;
 	
+	@NotEmpty(message = "Preenchimento obrigatório")
 	private String telephone1;
 	private String telephone2;
 	private String telephone3;
