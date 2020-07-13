@@ -6,12 +6,19 @@ import java.util.List;
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
+import com.pimpao.samplespringboot.domain.Customer;
 import com.pimpao.samplespringboot.domain.enums.CustomerType;
 import com.pimpao.samplespringboot.dto.CustomerNewDto;
+import com.pimpao.samplespringboot.repositories.CustomerRepository;
 import com.pimpao.samplespringboot.resources.exception.FieldMessage;
 import com.pimpao.samplespringboot.services.validation.utils.BR;
 
-public class CustomerInsertValidator implements ConstraintValidator<CustomerInsert, CustomerNewDto>{
+public class CustomerInsertValidator implements ConstraintValidator<CustomerInsert, CustomerNewDto> {
+	
+	@Autowired
+	private CustomerRepository customerRepository;
 	
 	@Override
 	public void initialize(CustomerInsert constraintAnnotation) {
@@ -27,6 +34,12 @@ public class CustomerInsertValidator implements ConstraintValidator<CustomerInse
 		
 		if (customerNewDto.getType().equals(CustomerType.ENTITY_LEGAL.getCode()) && !BR.isValidCNPJ(customerNewDto.getCpfOrCnpj())) {
 			list.add(new FieldMessage("cpfOrCnpj", "CNPJ Inválido"));
+		}
+		
+		Customer customer = customerRepository.findByEmail(customerNewDto.getEmail());
+		
+		if (customer != null) {
+			list.add(new FieldMessage("email", "Já existe cliente com email informado"));
 		}
 		
 		for (FieldMessage fieldMessage: list) {
