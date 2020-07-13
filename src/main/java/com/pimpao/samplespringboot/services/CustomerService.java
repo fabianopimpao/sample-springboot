@@ -53,7 +53,7 @@ public class CustomerService {
 	public Customer update(Customer customer, Integer id) {
 		Customer customerUpdate = this.findById(id);
 		updateData(customerUpdate, customer);
-		return customerRepository.save(customer);
+		return customerRepository.save(customerUpdate);
 	}	
 
 	public void deleteById(Integer id) {
