@@ -5,9 +5,11 @@ import java.util.Date;
 import javax.persistence.Entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.pimpao.samplespringboot.domain.enums.PaymentStatus;
 
 @Entity
+@JsonTypeName(value = "paymentWithSlip")
 public class PaymentWithSlip extends Payment {
 	
 	private static final long serialVersionUID = 1L;
