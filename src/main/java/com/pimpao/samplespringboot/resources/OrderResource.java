@@ -2,6 +2,8 @@ package com.pimpao.samplespringboot.resources;
 
 import java.net.URI;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -28,12 +30,12 @@ public class OrderResource {
 	}
 	
 	@RequestMapping(method = RequestMethod.POST)
-	public ResponseEntity<Void> save(@RequestBody Order order) {
+	public ResponseEntity<Void> save(@Valid @RequestBody Order order) {
 		Order newOrder = orderService.save(order);
 		URI uri = ServletUriComponentsBuilder
 					.fromCurrentRequest()
 					.path("/{id}")
-					.buildAndExpand(order.getId())
+					.buildAndExpand(newOrder.getId())
 					.toUri();
 		
 		return ResponseEntity.created(uri).build();
